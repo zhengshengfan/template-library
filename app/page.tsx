@@ -10,6 +10,7 @@ import {
   Check,
   Copy,
   Download,
+  Eye,
   FileText,
   GraduationCap,
   Home,
@@ -117,6 +118,102 @@ const templates = TEMPLATE_SEED.map(([title, category, tag, format], index) => (
   content: buildContent(title, format),
   note: "使用时请根据真实情况补充具体信息，避免直接提交未修改的占位内容。",
 }));
+
+
+const RED_FIELD_PATTERNS = [
+  /张三/g,
+  /李四/g,
+  /王五/g,
+  /赵六/g,
+  /某某某公司/g,
+  /某某小学/g,
+  /市场部/g,
+  /运营部/g,
+  /行政部/g,
+  /销售部/g,
+  /客服部/g,
+  /二年级一班/g,
+  /三年级一班/g,
+  /2026年\d{1,2}月\d{1,2}日/g,
+  /2026年\d{1,2}月/g,
+  /\d{4}年\d{1,2}月\d{1,2}日/g,
+  /13800000000/g,
+  /13900000000/g,
+  /\d+元/g,
+  /幸福小区3号楼/g,
+  /阳光花园5号楼/g,
+  /杭州/g,
+];
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function markEditableFields(text) {
+  let html = escapeHtml(text);
+  RED_FIELD_PATTERNS.forEach((pattern) => {
+    html = html.replace(pattern, (match) => `<span style="color:#d93025;font-weight:600;">${match}</span>`);
+  });
+  return html;
+}
+
+function isRightAlignedLine(line) {
+  return /^(申请人|请假人|汇报人|总结人|述职人|说课教师|执教教师|听课人|记录人|说明人|投诉人|委托人|受托人|策划人|负责人|班主任|联系电话|日期|2026年|\d{4}年)/.test(line);
+}
+
+function buildWordHtml(content) {
+  const lines = String(content || "").split("\n");
+  const firstTextIndex = lines.findIndex((line) => line.trim());
+
+  const body = lines
+    .map((raw, index) => {
+      const line = raw.trim();
+
+      if (!line) {
+        return `<p style="margin:0 0 10px 0;line-height:1.8;">&nbsp;</p>`;
+      }
+
+      const marked = markEditableFields(line);
+
+      if (index === firstTextIndex) {
+        return `<h1 style="text-align:center;font-size:22pt;font-weight:700;margin:0 0 24px 0;line-height:1.4;font-family:'SimHei','Microsoft YaHei',sans-serif;">${marked}</h1>`;
+      }
+
+      if (/^[一二三四五六七八九十]+、/.test(line)) {
+        return `<h2 style="font-size:14pt;font-weight:700;margin:18px 0 8px 0;line-height:1.8;font-family:'SimHei','Microsoft YaHei',sans-serif;">${marked}</h2>`;
+      }
+
+      if (/^（[一二三四五六七八九十]+）/.test(line)) {
+        return `<h3 style="font-size:12pt;font-weight:700;margin:14px 0 6px 0;line-height:1.8;font-family:'SimHei','Microsoft YaHei',sans-serif;">${marked}</h3>`;
+      }
+
+      if (/^\d+[.、]/.test(line)) {
+        return `<p style="font-size:12pt;margin:0 0 8px 0;line-height:1.9;text-indent:0;font-family:'FangSong','SimSun',serif;">${marked}</p>`;
+      }
+
+      if (isRightAlignedLine(line)) {
+        return `<p style="font-size:12pt;margin:0 0 8px 0;line-height:1.9;text-align:right;font-family:'FangSong','SimSun',serif;">${marked}</p>`;
+      }
+
+      return `<p style="font-size:12pt;margin:0 0 8px 0;line-height:1.9;text-indent:2em;font-family:'FangSong','SimSun',serif;">${marked}</p>`;
+    })
+    .join("");
+
+  return `
+    <div style="background:#ffffff;color:#111111;font-family:'FangSong','SimSun',serif;font-size:12pt;line-height:1.9;">
+      <div style="max-width:720px;margin:0 auto;padding:48px 56px;background:#ffffff;">
+        ${body}
+        <div style="margin-top:24px;border-top:1px solid #e5e5e5;padding-top:12px;font-size:10.5pt;color:#888;font-family:'Microsoft YaHei',sans-serif;">
+          红色内容为建议替换项，请根据真实情况修改后使用。
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 function Pill({ children, tone = "gray" }) {
   const styles =
@@ -256,6 +353,8 @@ export default function Page() {
   const [selected, setSelected] = useState(null);
   const [categoryPage, setCategoryPage] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [wordCopied, setWordCopied] = useState(false);
+  const [wordPreviewOpen, setWordPreviewOpen] = useState(true);
   const [loginOpen, setLoginOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
@@ -300,6 +399,8 @@ export default function Page() {
 
   useEffect(() => {
     setCopied(false);
+    setWordCopied(false);
+    setWordPreviewOpen(true);
   }, [selected?.id]);
 
   useEffect(() => {
@@ -381,8 +482,35 @@ export default function Page() {
     if (!selected) return;
     await copyText(selected.content);
     setCopied(true);
-    showToast("正文已复制");
+    showToast("纯文本已复制");
     setTimeout(() => setCopied(false), 1400);
+  };
+
+  const copyTemplateWord = async () => {
+    if (!selected) return;
+
+    const html = buildWordHtml(selected.content);
+    const plainText = selected.content;
+
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([plainText], { type: "text/plain" }),
+          }),
+        ]);
+      } else {
+        await copyText(plainText);
+      }
+
+      setWordCopied(true);
+      showToast("Word排版版已复制");
+      setTimeout(() => setWordCopied(false), 1400);
+    } catch {
+      await copyText(plainText);
+      showToast("已复制纯文本，当前浏览器不支持Word排版复制");
+    }
   };
 
   const copyTemplateLink = async (item) => {
@@ -659,8 +787,58 @@ function EmptyResults({ setQuery, setRequestOpen }) {
   );
 }
 
-function DetailPage({ item, related, openHome, openCategoryPage, setSelected, favorites, toggleFavorite, copied, copyTemplate, copyTemplateLink }) {
+function DetailPage({
+  item,
+  related,
+  openHome,
+  openCategoryPage,
+  setSelected,
+  favorites,
+  toggleFavorite,
+  copied,
+  copyTemplate,
+  copyTemplateLink,
+}) {
   const isFavorite = favorites.includes(item.id);
+  const [wordPreviewOpen, setLocalWordPreviewOpen] = useState(true);
+  const [wordCopied, setLocalWordCopied] = useState(false);
+
+  useEffect(() => {
+    setLocalWordPreviewOpen(true);
+    setLocalWordCopied(false);
+  }, [item.id]);
+
+  const copyTemplateWordLocal = async () => {
+    const html = buildWordHtml(item.content);
+    const plainText = item.content;
+
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/html": new Blob([html], { type: "text/html" }),
+            "text/plain": new Blob([plainText], { type: "text/plain" }),
+          }),
+        ]);
+      } else {
+        await navigator.clipboard.writeText(plainText);
+      }
+
+      setLocalWordCopied(true);
+      window.setTimeout(() => setLocalWordCopied(false), 1400);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = plainText;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setLocalWordCopied(true);
+      window.setTimeout(() => setLocalWordCopied(false), 1400);
+    }
+  };
 
   return (
     <main className="mx-auto max-w-[1380px] px-5 py-6 md:px-8">
@@ -683,6 +861,7 @@ function DetailPage({ item, related, openHome, openCategoryPage, setSelected, fa
             <h1 className="text-[42px] font-semibold leading-tight tracking-[-0.055em] md:text-[64px]">{item.title}</h1>
             <p className="mt-6 max-w-3xl text-[17px] leading-8 text-[#666]">{item.scenario}</p>
           </div>
+
           <div className="rounded-[30px] bg-[#f5f5f5] p-6">
             <h2 className="text-[20px] font-semibold">标准格式</h2>
             <ul className="mt-5 grid gap-3 text-[14px] text-[#666]">
@@ -701,6 +880,7 @@ function DetailPage({ item, related, openHome, openCategoryPage, setSelected, fa
         <div className="rounded-[36px] bg-white p-6 md:p-8">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-[26px] font-semibold">可复制模板</h2>
+
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => toggleFavorite(item.id)}
@@ -709,29 +889,59 @@ function DetailPage({ item, related, openHome, openCategoryPage, setSelected, fa
                 <Star className="mr-2 h-4 w-4" />
                 {isFavorite ? "已收藏" : "收藏模板"}
               </button>
-              <button onClick={() => copyTemplateLink(item)} className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]">
+
+              <button
+                onClick={() => setLocalWordPreviewOpen((value) => !value)}
+                className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                {wordPreviewOpen ? "收起预览" : "预览Word"}
+              </button>
+
+              <button
+                onClick={copyTemplateWordLocal}
+                className="inline-flex items-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] text-white"
+              >
+                {wordCopied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                {wordCopied ? "已复制Word版" : "复制到Word"}
+              </button>
+
+              <button
+                onClick={copyTemplate}
+                className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
+              >
+                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                {copied ? "已复制" : "复制纯文本"}
+              </button>
+
+              <button
+                onClick={() => copyTemplateLink(item)}
+                className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
+              >
                 <Link className="mr-2 h-4 w-4" />
                 复制链接
               </button>
-              <button onClick={copyTemplate} className="inline-flex items-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] text-white">
-                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                {copied ? "已复制" : "复制正文"}
-              </button>
             </div>
           </div>
-          <pre className="whitespace-pre-wrap rounded-[30px] bg-[#f8f8f8] p-6 text-[15px] leading-8 text-[#333]">{item.content}</pre>
+
+          {wordPreviewOpen ? <WordPreview content={item.content} /> : null}
+
+          <pre className="mt-4 whitespace-pre-wrap rounded-[30px] bg-[#f8f8f8] p-6 text-[15px] leading-8 text-[#333]">{item.content}</pre>
         </div>
 
         <aside className="space-y-4">
           <InfoBox title="填写提醒" lines={[item.note]} />
           <InfoBox title="收藏功能" lines={[isFavorite ? "这个模板已加入收藏。后续登录后可同步保存到账号。" : "点击收藏后，可在后续用户中心里快速找到常用模板。"]} />
-          
-          <InfoBox title="文件下载规划" lines={["后续会支持 Word、Excel、PDF 等文件下载形式，目前可先免费复制正文使用。"]} dark />
+          <InfoBox title="Word使用提示" lines={["点击复制到Word后，打开Word直接粘贴即可。红色文字为建议替换内容，例如姓名、公司、日期、金额、联系方式等。"]} dark />
         </aside>
       </section>
 
       <section className="mt-4 rounded-[36px] bg-white p-6 md:p-8">
-        <SectionTitle title="相关模板" desc="同分类下的其他常用模板。" action={<button onClick={() => openCategoryPage(item.category)} className="rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px]">查看全部</button>} />
+        <SectionTitle
+          title="相关模板"
+          desc="同分类下的其他常用模板。"
+          action={<button onClick={() => openCategoryPage(item.category)} className="rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px]">查看全部</button>}
+        />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {related.map((template) => (
             <TemplateCard key={template.id} item={template} onOpen={setSelected} />
@@ -739,6 +949,27 @@ function DetailPage({ item, related, openHome, openCategoryPage, setSelected, fa
         </div>
       </section>
     </main>
+  );
+}
+
+function WordPreview({ content }) {
+  return (
+    <div className="rounded-[30px] bg-[#f3f3f3] p-4 md:p-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 className="text-[20px] font-semibold tracking-[-0.03em] text-[#111]">Word 预览窗口</h3>
+          <p className="mt-1 text-[13px] text-[#777]">红色内容为建议替换项，粘贴到 Word 后也会保留提示色。</p>
+        </div>
+        <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-medium text-[#777]">A4排版预览</span>
+      </div>
+
+      <div className="mx-auto max-h-[680px] max-w-[780px] overflow-auto rounded-[18px] bg-[#dcdcdc] p-4 shadow-inner">
+        <div
+          className="mx-auto min-h-[720px] max-w-[680px] bg-white px-8 py-10 text-[#111] shadow-[0_12px_40px_rgba(15,23,42,0.12)] md:px-12 md:py-12"
+          dangerouslySetInnerHTML={{ __html: buildWordHtml(content) }}
+        />
+      </div>
+    </div>
   );
 }
 
