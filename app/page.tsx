@@ -509,7 +509,7 @@ export default function Page() {
       setTimeout(() => setWordCopied(false), 1400);
     } catch {
       await copyText(plainText);
-      showToast("已复制纯文本，当前浏览器不支持Word排版复制");
+      showToast("当前浏览器不支持排版复制，已改为复制纯文本");
     }
   };
 
@@ -662,11 +662,11 @@ function Hero({ query, setQuery, scrollToResults }) {
     <section className="mx-auto max-w-[1380px] px-5 pb-8 pt-6 md:px-8">
       <div className="relative overflow-hidden rounded-[36px] bg-white px-6 py-16 md:px-12 md:py-24 lg:py-28">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="relative mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-flex rounded-full bg-[#f5f5f5] px-4 py-2 text-[14px] font-medium text-[#777]">全站免费开放 · 打开即用 · 持续更新</div>
+          <div className="mb-6 inline-flex rounded-full bg-[#f5f5f5] px-4 py-2 text-[14px] font-medium text-[#777]">免费复制 · Word预览 · 红色替换提示</div>
           <h1 className="text-[44px] font-semibold leading-[1.05] tracking-[-0.055em] md:text-[76px] lg:text-[88px]">
             常用模板<span className="block">一页搞定</span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理职场办公、教育资料、活动方案、生活文书和表格清单。所有模板均可免费查看和复制。</p>
+          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理职场办公、教育资料、活动方案、生活文书和表格清单。支持纯文本复制、复制到 Word，并用红色标出需要替换的内容。</p>
 
           <div className="mx-auto mt-11 flex max-w-2xl items-center rounded-full bg-[#f5f5f5] p-2">
             <Search className="ml-5 h-5 w-5 text-[#999]" />
@@ -706,7 +706,7 @@ function Hero({ query, setQuery, scrollToResults }) {
             {[
               [30, "常用模板"],
               [5, "实用分类"],
-              ["免费", "复制使用"],
+              ["Word", "排版复制"],
             ].map(([number, label]) => (
               <div key={label} className="rounded-[24px] bg-[#f5f5f5] px-4 py-5 text-center">
                 <div className="text-[26px] font-semibold tracking-[-0.04em] text-[#111]">{number}</div>
@@ -879,7 +879,7 @@ function DetailPage({
       <section className="mt-4 grid gap-4 lg:grid-cols-[1fr_360px]">
         <div className="rounded-[36px] bg-white p-6 md:p-8">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-[26px] font-semibold">可复制模板</h2>
+            <h2 className="text-[26px] font-semibold">Word预览与复制</h2>
 
             <div className="flex flex-wrap gap-2">
               <button
@@ -903,7 +903,7 @@ function DetailPage({
                 className="inline-flex items-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] text-white"
               >
                 {wordCopied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                {wordCopied ? "已复制Word版" : "复制到Word"}
+                {wordCopied ? "已复制Word版" : "复制到Word（推荐）"}
               </button>
 
               <button
@@ -932,7 +932,7 @@ function DetailPage({
         <aside className="space-y-4">
           <InfoBox title="填写提醒" lines={[item.note]} />
           <InfoBox title="收藏功能" lines={[isFavorite ? "这个模板已加入收藏。后续登录后可同步保存到账号。" : "点击收藏后，可在后续用户中心里快速找到常用模板。"]} />
-          <InfoBox title="Word使用提示" lines={["点击复制到Word后，打开Word直接粘贴即可。红色文字为建议替换内容，例如姓名、公司、日期、金额、联系方式等。"]} dark />
+          <InfoBox title="Word使用提示" lines={["点击复制到Word后，打开Word直接粘贴即可。红色文字为必须检查和替换的内容，普通黑色正文可按需保留。"]} dark />
         </aside>
       </section>
 
@@ -958,7 +958,7 @@ function WordPreview({ content }) {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h3 className="text-[20px] font-semibold tracking-[-0.03em] text-[#111]">Word 预览窗口</h3>
-          <p className="mt-1 text-[13px] text-[#777]">红色内容为建议替换项，粘贴到 Word 后也会保留提示色。</p>
+          <p className="mt-1 text-[13px] text-[#777]">红色内容为需要用户替换的提示项，例如姓名、公司、日期、金额、联系方式。</p>
         </div>
         <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-medium text-[#777]">A4排版预览</span>
       </div>
@@ -1027,9 +1027,9 @@ function DownloadSection() {
         <div className="rounded-[36px] bg-[#111] p-8 text-white md:col-span-2 md:p-11">
           <Download size={23} />
           <h2 className="mt-12 text-[32px] font-semibold md:text-[48px]">下载专区</h2>
-          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">当前模板内容均可免费复制使用。后续会继续完善 Word、Excel、PDF 等文件下载形式。</p>
+          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">当前已支持纯文本复制和 Word 排版复制。后续会继续完善 Word、Excel、PDF 文件下载和资料包功能。</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">复制即用</span>
+            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">复制到Word</span>
             <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">文件下载规划中</span>
           </div>
         </div>
@@ -1047,7 +1047,7 @@ function UsageSection() {
   return (
     <section id="membership" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-10 md:px-8">
       <div className="grid gap-4 md:grid-cols-2">
-        <InfoBox title="免费开放使用" lines={["当前全部模板免费开放，打开即可查看、复制和使用。", "无需登录，打开即可使用。"]} />
+        <InfoBox title="免费开放使用" lines={["当前全部模板免费开放，打开即可查看、复制和使用。", "需要修改的内容会在 Word 预览里标红，用户照着替换即可。"]} />
         <InfoBox title="更多实用功能" lines={["后续会继续完善文件下载、资料包整理、收藏和历史记录。"]} dark />
       </div>
     </section>
@@ -1161,7 +1161,7 @@ function InfoModal({ type, close }) {
     },
     guide: {
       title: "使用说明",
-      body: ["你可以通过搜索框查找模板，也可以按分类浏览。", "打开模板详情后，可查看标准格式、复制正文，并根据实际情况替换占位内容。"],
+      body: ["你可以通过搜索框查找模板，也可以按分类浏览。", "打开模板详情后，可查看 Word 预览、复制纯文本或复制到 Word。红色内容为需要替换的提示项。"],
     },
     privacy: {
       title: "隐私说明",
