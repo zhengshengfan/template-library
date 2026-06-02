@@ -13,6 +13,7 @@
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.16.0",
     "next": "latest",
+    "nodemailer": "^8.0.10",
     "react": "latest",
     "react-dom": "latest"
   },
