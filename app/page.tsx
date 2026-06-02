@@ -90,6 +90,27 @@ const TEMPLATE_SEED: TemplateSeedItem[] = [
 ];
 
 const HOT_KEYWORDS = ["请假条", "离职通知", "工作总结", "教学设计", "说课稿", "情况说明", "借条", "自我介绍"];
+const FEATURED_TEMPLATE_TITLES = [
+  "离职通知书模板",
+  "请假条模板",
+  "工作总结模板",
+  "情况说明书模板",
+  "借条模板",
+  "欠条模板",
+  "委托书模板",
+  "教学设计模板",
+  "说课稿模板",
+  "公开课逐字稿模板",
+  "个人简历模板",
+  "面试自我介绍模板",
+];
+
+const PACK_PREVIEW = [
+  { title: "办公高频模板", desc: "请假、离职通知、转正、加薪、工作总结、会议纪要等办公常用文档。" },
+  { title: "教师教育模板", desc: "教学设计、说课稿、公开课教案、逐字稿、教学反思等教师常用资料。" },
+  { title: "生活文书模板", desc: "借条、欠条、收据、委托书、证明、投诉信等生活常用文书。" },
+];
+
 const CATEGORY_NAMES = CATEGORY_CONFIG.map((item) => item.name);
 const CATEGORY_SLUGS = {
   工作办公: "work",
@@ -140,6 +161,31 @@ const FORMULA_CONTENT: Record<string, string> = {
   "竞选演讲稿模板": "竞选演讲稿\n\n尊敬的老师、亲爱的同学们：\n\n大家好！\n\n我是【姓名】，今天我要竞选的是【竞选岗位】。非常感谢老师和同学们给我这次展示自己的机会。\n\n我认为自己竞选这个岗位有以下几个优势：\n\n第一，我【个人优势一】；\n第二，我【个人优势二】；\n第三，我愿意为班级和同学服务，认真完成老师交给的任务。\n\n如果我能够竞选成功，我会从以下方面努力：\n\n一、认真负责，做好本职工作；\n二、主动帮助同学，维护班级秩序；\n三、积极配合老师，参与班级管理；\n四、听取同学意见，努力让班级变得更好。\n\n如果没有竞选成功，我也不会气馁，会继续向优秀同学学习。希望大家支持我，投我一票。\n\n谢谢大家！",
 };
 
+
+Object.assign(FORMULA_CONTENT, {
+  "周报模板": "工作周报\n\n汇报人：【姓名】\n所属部门：【部门名称】\n汇报周期：【开始日期】至【结束日期】\n\n一、本周工作完成情况\n\n（一）【工作事项一】\n\n本周完成了【具体工作内容】，目前进展为【完成情况/结果数据】。\n\n（二）【工作事项二】\n\n围绕【项目/任务】，完成【具体动作】，并与【相关人员/部门】同步了【协作内容】。\n\n（三）【工作事项三】\n\n针对【问题/需求】，已完成【处理方式】，后续需要继续跟进【待跟进事项】。\n\n二、本周重点成果\n\n1. 【成果一】：【具体结果/数据/影响】；\n2. 【成果二】：【具体结果/数据/影响】；\n3. 【成果三】：【具体结果/数据/影响】。\n\n三、存在问题与风险\n\n目前工作中主要存在【问题一】、【问题二】。其中【问题一】可能影响【影响范围】，需要【需要支持/解决方式】。\n\n四、下周工作计划\n\n1. 推进【计划一】，预计完成【目标结果】；\n2. 跟进【计划二】，重点解决【关键问题】；\n3. 完成【计划三】，并同步【相关人员/部门】。\n\n五、需要协调支持\n\n【请填写需要领导、同事或其他部门支持的事项；如没有，可填写“暂无”。】\n\n汇报人：【姓名】\n【日期】",
+  "月报模板": "月度工作报告\n\n汇报人：【姓名】\n所属部门：【部门名称】\n汇报月份：【月份】\n\n一、本月工作概述\n\n本月围绕【月度目标】开展工作，重点推进了【重点工作一】、【重点工作二】和【重点工作三】。整体来看，本月工作完成情况为【总体评价】。\n\n二、重点工作完成情况\n\n（一）【工作模块一】\n\n本月完成【具体事项】，取得【结果/数据/反馈】。\n\n（二）【工作模块二】\n\n针对【任务/问题】，采取了【处理措施】，目前结果为【完成情况】。\n\n（三）【工作模块三】\n\n配合【部门/人员】完成【协作事项】，推动【项目/流程】进一步完善。\n\n三、数据与成果\n\n1. 【指标一】：【数据/变化】；\n2. 【指标二】：【数据/变化】；\n3. 【指标三】：【数据/变化】。\n\n四、问题复盘\n\n本月仍存在【问题一】、【问题二】。主要原因是【原因分析】，后续需要从【改进方向】进行优化。\n\n五、下月计划\n\n1. 完成【下月计划一】；\n2. 优化【下月计划二】；\n3. 推进【下月计划三】；\n4. 持续复盘【重点问题】。\n\n汇报人：【姓名】\n【日期】",
+  "听课记录模板": "听课记录\n\n听课时间：【听课时间】\n授课教师：【授课教师】\n听课教师：【听课教师】\n授课班级：【年级班级】\n课题名称：【课题名称】\n\n一、教学过程记录\n\n（一）导入环节\n\n教师通过【导入方式】引出课题，学生反应【学生反应情况】。\n\n（二）新课学习\n\n教师围绕【核心内容】展开教学，通过【教学活动/问题设计】引导学生理解知识点。\n\n（三）合作探究\n\n学生围绕【探究问题】进行交流，教师巡视指导，并对学生发言进行评价和点拨。\n\n（四）练习巩固\n\n学生完成【练习任务】，教师根据完成情况进行讲评。\n\n（五）课堂小结\n\n教师引导学生回顾【学习内容】，总结【学习方法/知识结构】。\n\n二、课堂亮点\n\n1. 【亮点一】；\n2. 【亮点二】；\n3. 【亮点三】。\n\n三、改进建议\n\n1. 可在【环节】中增加【建议内容】；\n2. 对【学生表现/课堂节奏/问题设计】可进一步优化；\n3. 建议加强【能力训练/评价反馈/板书梳理】。\n\n四、总体评价\n\n本节课教学目标【达成情况】，课堂结构【清晰/完整】，学生参与度【评价】。整体来看，是一节【总体评价】的课。\n\n听课人：【听课人】\n【日期】",
+  "教学反思模板": "教学反思\n\n课题：【课题名称】\n授课教师：【教师姓名】\n授课班级：【年级班级】\n授课时间：【授课时间】\n\n一、目标达成情况\n\n本节课围绕【教学目标】展开。从课堂表现和练习反馈来看，学生基本能够【达成情况】，但在【未完全达成部分】方面仍需要进一步巩固。\n\n二、课堂亮点\n\n（一）情境导入较自然\n\n通过【导入方式】，学生能够较快进入学习状态，对【学习主题】产生兴趣。\n\n（二）问题设计有层次\n\n课堂中围绕【核心问题】逐步推进，学生能够从【浅层理解】过渡到【深入思考】。\n\n（三）学生参与较充分\n\n学生在【讨论/朗读/表达/操作】中参与积极，部分学生能够主动表达自己的想法。\n\n三、存在问题\n\n1. 【问题一】；\n2. 【问题二】；\n3. 【问题三】。\n\n四、原因分析\n\n出现上述问题，主要与【教学设计/课堂节奏/学生基础/评价反馈】有关。部分环节在时间分配上还不够合理，对学生生成性回答的追问也可以更深入。\n\n五、改进措施\n\n1. 优化【教学环节】，让课堂层次更加清晰；\n2. 增加【练习/表达/合作】机会，提高学生参与度；\n3. 加强课堂评价，及时肯定学生亮点并指出改进方向；\n4. 课后针对【薄弱点】进行补充练习。\n\n反思人：【教师姓名】\n【日期】",
+  "家长会发言稿模板": "家长会发言稿\n\n尊敬的各位家长：\n\n大家好！非常感谢各位在百忙之中参加本次家长会。我是【班级名称】的【教师姓名】。今天想和大家交流【会议主题】，也希望通过这次沟通，让家校之间形成更好的配合。\n\n一、班级整体情况\n\n本学期以来，班级整体情况【总体评价】。大部分孩子能够遵守课堂纪律，积极参与学习活动，在【学习习惯/行为习惯/集体意识】方面都有一定进步。\n\n二、学生主要表现\n\n（一）学习方面\n\n多数学生能够完成【学习任务】，但也有部分学生在【薄弱环节】上还需要加强。\n\n（二）习惯方面\n\n孩子们在【良好表现】方面进步明显，但【需要改进的习惯】仍需要家校共同关注。\n\n（三）集体生活方面\n\n学生在班级活动中能够【积极表现】，整体班级氛围【评价】。\n\n三、需要家长配合的事项\n\n1. 关注孩子每天的【作业/阅读/复习】情况；\n2. 帮助孩子养成【时间管理/整理书包/按时作息】习惯；\n3. 多鼓励孩子表达真实想法，及时与老师沟通；\n4. 对孩子的进步给予肯定，对问题耐心引导。\n\n四、结束语\n\n教育不是学校单方面的事情，需要老师、家长和孩子共同努力。后续我也会继续关注每一位孩子的成长，及时和家长保持沟通。再次感谢大家的支持与配合。\n\n谢谢大家！",
+  "班主任评语模板": "班主任评语\n\n【学生姓名】同学：\n\n你是一个【性格特点】的孩子。本学期以来，你在【学习/纪律/劳动/活动】方面表现【总体评价】，能够【具体优点一】，也能在【具体场景】中展现出【具体优点二】。\n\n在学习方面，你【学习表现】。如果接下来能够在【需要改进的方面】上继续努力，相信你会取得更明显的进步。\n\n在班级生活中，你能够【集体表现】，与同学相处【相处情况】。老师也看到你在【成长变化】方面有了进步。\n\n希望你今后继续保持【优点】，同时加强【改进方向】。只要你愿意坚持，一定会成为更自信、更优秀的自己。\n\n班主任：【教师姓名】\n【日期】",
+  "少先队活动课设计模板": "少先队活动课设计\n\n活动主题：【活动主题】\n活动对象：【中队/年级】\n辅导员：【辅导员姓名】\n活动时间：【活动时间】\n\n一、活动背景\n\n【请填写设计本次活动的现实背景、队员特点、主题来源和育人价值。】\n\n二、活动目标\n\n1. 认知目标：队员能够了解【主题知识/相关内容】；\n2. 情感目标：队员能够感受【价值情感/精神内涵】；\n3. 行动目标：队员能够在生活中践行【具体行动】。\n\n三、活动准备\n\n辅导员准备：【课件、视频、图片、队旗、活动道具】。\n队员准备：【资料收集、节目准备、发言准备、实践记录】。\n\n四、活动过程\n\n（一）队仪式\n\n整队、报告人数、出旗、唱队歌，宣布活动开始。\n\n（二）情境导入，唤起兴趣\n\n通过【故事/图片/视频/问题】引出活动主题，引导队员说出自己的初步感受。\n\n（三）故事学习，明白道理\n\n围绕【故事/人物/事件】展开学习，辅导员引导队员理解其中蕴含的【精神/品质/价值】。\n\n（四）交流讨论，联系生活\n\n队员围绕【讨论问题】进行小队交流，结合自己的学习生活谈认识、谈感受。\n\n（五）实践展示，形成行动\n\n队员展示【作品/行动计划/实践成果】，明确今后可以从【具体行动】做起。\n\n（六）辅导员总结\n\n辅导员结合队员表现进行总结，引导队员把活动收获落实到日常行动中。\n\n（七）呼号、退旗\n\n全体队员呼号，退旗，活动结束。\n\n五、活动延伸\n\n活动后开展【实践任务/打卡活动/家庭行动/班级展示】，让活动效果持续发生。",
+  "班级活动方案模板": "班级活动方案\n\n活动主题：【活动主题】\n活动时间：【活动时间】\n活动地点：【活动地点】\n参加人员：【参加人员】\n负责人：【负责人】\n\n一、活动背景\n\n为丰富班级生活，增强学生【活动目的】，结合【班级实际/节日主题/学校安排】，特开展本次活动。\n\n二、活动目标\n\n1. 让学生了解【主题内容】；\n2. 培养学生【能力/习惯/意识】；\n3. 增强班级凝聚力，营造【活动氛围】。\n\n三、活动准备\n\n1. 教师准备：【课件/道具/奖品/场地】；\n2. 学生准备：【节目/材料/分组任务】；\n3. 场地准备：【桌椅摆放/音响设备/安全检查】。\n\n四、活动流程\n\n（一）开场导入\n\n主持人介绍活动主题和活动要求。\n\n（二）主题活动\n\n开展【活动环节一】，引导学生积极参与。\n\n（三）互动展示\n\n学生进行【展示/分享/比赛/交流】，教师及时评价。\n\n（四）总结提升\n\n班主任对活动进行总结，肯定学生表现，并提出后续希望。\n\n五、注意事项\n\n1. 活动中注意安全；\n2. 学生按小组有序参与；\n3. 活动结束后及时整理场地；\n4. 做好照片、文字和成果记录。\n\n六、预期效果\n\n通过本次活动，学生能够【预期收获】，班级氛围进一步提升。",
+  "检讨书模板": "检讨书\n\n尊敬的【老师/领导】：\n\n您好！\n\n我是【姓名】。因【错误事项】，给【班级/团队/他人】造成了不好的影响。对此，我感到非常惭愧，也认识到自己的行为是不正确的。\n\n一、错误事实\n\n【请客观写清楚事情发生的时间、地点、经过和具体错误，不要推卸责任。】\n\n二、原因分析\n\n这次错误的发生，主要是因为我【原因一】、【原因二】。同时也说明我在【纪律意识/责任意识/时间管理】方面做得还不够。\n\n三、认识反思\n\n通过这件事，我认识到【反思内容】。如果每个人都忽视规则，就会影响集体秩序，也会给他人带来麻烦。\n\n四、改正措施\n\n1. 以后严格遵守【相关规定】；\n2. 遇到问题及时沟通，不再用错误方式处理；\n3. 主动接受老师/领导和同学/同事监督；\n4. 用实际行动弥补影响。\n\n请【老师/领导】给予我改正的机会，我会认真吸取教训，避免类似问题再次发生。\n\n检讨人：【姓名】\n【日期】",
+  "读后感模板": "读后感\n\n书名：【书名】\n作者：【作者】\n\n一、内容概括\n\n最近我阅读了《【书名】》。这本书主要讲述了【主要内容】，其中让我印象最深的是【印象深刻的情节/人物】。\n\n二、印象最深的地方\n\n读到【具体内容】时，我感受到【个人感受】。这个情节让我明白了【道理/启发】。\n\n三、我的思考\n\n我认为，书中的【人物/事件/观点】之所以打动我，是因为它让我想到了【生活经历/学习经历】。在现实生活中，我们也会遇到【类似情况】，这时就需要【行动/品质】。\n\n四、联系生活\n\n今后我会把书中的启发运用到生活中，比如【具体行动一】、【具体行动二】。\n\n五、总结\n\n读完这本书，我不仅了解了【内容收获】，也明白了【思想收获】。这是一本文值得细细阅读的书。\n\n作者：【姓名】\n【日期】",
+  "观后感模板": "观后感\n\n观看内容：【影片/节目/活动名称】\n观看时间：【观看时间】\n\n一、内容简介\n\n我观看了【影片/节目/活动名称】，它主要讲述了【主要内容】。其中，【情节/人物/画面】给我留下了深刻印象。\n\n二、印象深刻的片段\n\n最让我难忘的是【具体片段】。看到这里，我感受到【情绪/感受】，也开始思考【思考问题】。\n\n三、我的感悟\n\n通过观看，我明白了【道理/主题】。这让我想到，在生活中我们也应该【联系实际】。\n\n四、行动启发\n\n今后我会从【具体行动一】做起，努力做到【行动目标】。同时，也会提醒自己在遇到【类似情况】时，保持【态度/品质】。\n\n五、总结\n\n这次观看让我收获很大，不仅让我了解了【内容收获】，更让我懂得了【精神收获】。\n\n作者：【姓名】\n【日期】",
+  "国旗下讲话稿模板": "国旗下讲话稿\n\n尊敬的老师、亲爱的同学们：\n\n大家早上好！\n\n今天我国旗下讲话的主题是《【讲话主题】》。\n\n一、主题引入\n\n【请用一个生活现象、节日背景或简短故事引出主题。】\n\n二、观点表达\n\n【讲话主题】不是一句口号，而是我们每天都可以做到的行动。比如在学习中，我们可以【行动一】；在生活中，我们可以【行动二】；在集体中，我们可以【行动三】。\n\n三、事例说明\n\n我想和大家分享一个例子：【事例内容】。这个例子告诉我们，【道理/启发】。\n\n四、行动倡议\n\n在这里，我向大家发出倡议：\n\n第一，【倡议一】；\n第二，【倡议二】；\n第三，【倡议三】。\n\n五、结束语\n\n同学们，让我们从现在做起，从身边小事做起，把【讲话主题】落实到每一天的行动中。\n\n我的讲话完毕，谢谢大家！",
+  "主持词模板": "主持词\n\n活动名称：【活动名称】\n主持人：【主持人姓名】\n\n一、开场白\n\n尊敬的各位领导、各位嘉宾，亲爱的【老师/同学/同事/朋友们】：\n\n大家【上午/下午/晚上】好！\n\n欢迎大家来到【活动名称】现场。我是今天的主持人【姓名】。非常高兴与大家相聚在这里，共同参与本次活动。\n\n二、介绍活动背景\n\n本次活动以【活动主题】为主题，旨在【活动目的】。接下来，让我们一起走进今天的精彩内容。\n\n三、介绍嘉宾\n\n首先，请允许我介绍出席本次活动的嘉宾，他们是：【嘉宾名单】。让我们以热烈的掌声欢迎他们的到来。\n\n四、流程串联\n\n下面进入第一个环节：【环节一名称】。有请【人员姓名/单位】上台。\n\n感谢【人员姓名】的精彩分享。接下来进入第二个环节：【环节二名称】。\n\n五、互动过渡\n\n刚才的环节让我们感受到了【内容亮点】。接下来的环节同样值得期待，请大家继续关注。\n\n六、结束语\n\n美好的时光总是短暂的。感谢各位领导、嘉宾和现场朋友们的参与，也感谢所有工作人员的辛苦付出。\n\n【活动名称】到此结束，祝大家【祝福语】。谢谢大家！",
+  "领导讲话稿模板": "领导讲话稿\n\n尊敬的各位来宾、同志们、朋友们：\n\n大家好！\n\n今天，我们在这里举行【活动/会议名称】。首先，我代表【单位名称】，向出席本次活动的各位领导、嘉宾和朋友表示热烈欢迎，向长期关心支持【工作/事业】发展的各界人士表示衷心感谢。\n\n一、充分认识活动意义\n\n本次【活动/会议】的举办，对于【意义一】、【意义二】和【意义三】具有重要作用。它不仅是一次【活动性质】，也是推动【工作方向】的重要契机。\n\n二、肯定前期工作\n\n过去一段时间，【单位/团队】围绕【工作重点】做了大量工作，在【成果一】、【成果二】等方面取得了积极成效。这些成绩离不开大家的共同努力。\n\n三、提出希望要求\n\n接下来，希望大家重点做好以下几点：\n\n第一，提高认识，增强责任感；\n第二，突出重点，抓好工作落实；\n第三，加强协作，形成工作合力；\n第四，及时总结，推动成果转化。\n\n四、结束祝福\n\n最后，预祝【活动/会议名称】圆满成功，祝各位身体健康、工作顺利、万事如意。\n\n谢谢大家！",
+  "开场白结束语模板": "开场白与结束语模板\n\n一、开场白\n\n尊敬的各位领导、各位来宾，亲爱的【称呼】：\n\n大家【上午/下午/晚上】好！\n\n欢迎来到【活动名称】现场。今天，我们因【活动主题/活动目的】相聚在这里，共同开启一段充满意义的时光。\n\n我是本次活动的主持人【姓名】。首先，请允许我代表【主办方/单位名称】，对各位的到来表示热烈欢迎和衷心感谢。\n\n接下来，让我们一起走进今天的活动。\n\n二、结束语\n\n美好的时光总是短暂的，但今天的收获和感动会留在我们心中。\n\n感谢各位领导、嘉宾的莅临指导，感谢所有参与者的积极投入，也感谢幕后工作人员的辛苦付出。\n\n【活动名称】到这里就圆满结束了。祝大家【祝福语】。我们下次再见！",
+  "获奖感言模板": "获奖感言\n\n尊敬的各位领导、老师、同事/同学们：\n\n大家好！\n\n很荣幸能够获得【奖项名称】。此时此刻，我的心情非常激动，也非常感恩。\n\n首先，我要感谢【感谢对象一】，感谢你们在【方面】给予我的帮助和支持；也要感谢【感谢对象二】，在我遇到困难时给予鼓励；还要感谢【团队/同事/同学】，因为这个成绩离不开大家的共同努力。\n\n回顾这段经历，我最大的收获是【收获内容】。在准备和努力的过程中，我也更加明白了【感悟内容】。\n\n这份荣誉既是肯定，也是新的起点。今后我会继续保持【态度/精神】，在【未来方向】上不断努力，争取取得更好的成绩。\n\n最后，再次感谢大家的支持与鼓励。谢谢！",
+  "表态发言模板": "表态发言\n\n尊敬的各位领导、同志们：\n\n大家好！\n\n今天围绕【会议/工作主题】作表态发言，我深感责任重大。接下来，我将认真贯彻【相关要求/会议精神】，以更加积极的态度做好各项工作。\n\n一、提高认识，端正态度\n\n我将充分认识【工作事项】的重要性，把思想和行动统一到【工作要求】上来，做到主动担当、认真落实。\n\n二、明确重点，抓好执行\n\n围绕【重点工作】，我将重点做好以下几方面：\n\n第一，抓好【措施一】；\n第二，推进【措施二】；\n第三，落实【措施三】。\n\n三、加强协作，确保成效\n\n在后续工作中，我将积极配合【部门/团队】，及时沟通问题，主动反馈进展，确保各项任务落到实处。\n\n四、严守要求，接受监督\n\n我将严格按照【制度/标准/要求】执行，主动接受领导和同事监督，不推诿、不拖延，努力完成【目标任务】。\n\n以上是我的表态发言，谢谢大家！",
+  "自我评价模板": "自我评价\n\n本人性格【性格特点】，做事认真负责，具有较强的学习能力和执行能力。在过往【学习/工作/实习】经历中，我逐步积累了【相关经验】，能够较快适应新环境并完成岗位任务。\n\n在能力方面，我比较擅长【能力一】、【能力二】和【能力三】。面对工作中的问题，我能够主动分析原因，及时沟通反馈，并通过复盘不断改进。\n\n在团队协作方面，我重视沟通配合，能够理解团队目标，积极完成分内工作，也愿意在需要时主动提供支持。\n\n当然，我也认识到自己在【需要提升的方面】仍有进步空间。未来我会继续加强学习，提升专业能力和综合素质，希望在【目标岗位/发展方向】中创造更稳定的价值。",
+  "求职信模板": "求职信\n\n尊敬的【公司名称】招聘负责人：\n\n您好！\n\n我叫【姓名】，毕业于【学校名称】【专业名称】，了解到贵公司正在招聘【应聘岗位】，我对该岗位十分感兴趣，特此投递求职申请。\n\n在过往经历中，我曾参与【项目/实习/工作经历】，主要负责【相关工作内容】。通过这些经历，我积累了【岗位相关能力一】、【岗位相关能力二】和【岗位相关能力三】，也对【行业/岗位方向】有了更清晰的认识。\n\n我认为自己与该岗位较为匹配，主要体现在以下方面：\n\n第一，具备【能力优势一】，能够完成【岗位任务】；\n第二，拥有【相关经验】，能够较快适应工作要求；\n第三，学习意愿较强，愿意在【发展方向】持续提升。\n\n如果有机会加入贵公司，我会认真学习业务，积极融入团队，努力为岗位创造实际价值。\n\n感谢您阅读我的求职信，期待获得面试机会。\n\n求职人：【姓名】\n联系电话：【联系电话】\n邮箱：【邮箱地址】\n【日期】",
+  "实习总结模板": "实习总结\n\n实习单位：【实习单位名称】\n实习岗位：【实习岗位】\n实习时间：【开始日期】至【结束日期】\n实习生：【姓名】\n\n一、实习基本情况\n\n在【实习时间】期间，我在【实习单位名称】担任【实习岗位】，主要参与【工作内容一】、【工作内容二】和【工作内容三】。\n\n二、主要实习内容\n\n（一）【实习内容一】\n\n我主要负责【具体工作】，通过【方法/工具】完成【结果】。\n\n（二）【实习内容二】\n\n在【项目/任务】中，我参与了【具体事项】，对【岗位能力】有了更直观的认识。\n\n（三）【实习内容三】\n\n我协助【同事/团队】完成【协作内容】，学习了【流程/方法/经验】。\n\n三、实习收获\n\n通过本次实习，我在【专业能力】、【沟通能力】和【执行能力】方面都有收获，也更加了解了【行业/岗位】的实际工作要求。\n\n四、存在不足\n\n实习过程中，我也发现自己在【不足一】、【不足二】方面还需要提升。后续我会通过【改进方式】继续加强。\n\n五、未来计划\n\n今后我将继续学习【专业知识/技能】，提升实践能力，为未来进入【目标行业/岗位】做好准备。\n\n总结人：【姓名】\n【日期】",
+  "离职交接清单模板": "离职交接清单\n\n交接人：【姓名】\n所属部门：【部门名称】\n岗位名称：【岗位名称】\n交接日期：【交接日期】\n接收人：【接收人姓名】\n\n一、工作事项交接\n\n1. 【工作事项一】：当前进度【进度说明】，后续需跟进【待办事项】；\n2. 【工作事项二】：当前进度【进度说明】，后续需跟进【待办事项】；\n3. 【工作事项三】：当前进度【进度说明】，后续需跟进【待办事项】。\n\n二、文件资料交接\n\n1. 【文件/资料名称一】：存放位置【位置说明】；\n2. 【文件/资料名称二】：存放位置【位置说明】；\n3. 【文件/资料名称三】：存放位置【位置说明】。\n\n三、账号权限交接\n\n1. 【系统/平台名称】：账号【账号说明】，处理方式【移交/注销/修改权限】；\n2. 【系统/平台名称】：账号【账号说明】，处理方式【移交/注销/修改权限】。\n\n四、物品交接\n\n1. 【办公设备/工牌/钥匙/资料】：【归还情况】；\n2. 【其他物品】：【归还情况】。\n\n五、未完成事项说明\n\n【请填写仍需后续跟进的事项、风险提醒和联系人信息。】\n\n交接人签字：【姓名】\n接收人签字：【姓名】\n部门确认：【负责人姓名】\n【日期】"
+});
+
 function buildContent(title, format) {
   if (FORMULA_CONTENT[title]) return FORMULA_CONTENT[title];
 
@@ -156,28 +202,27 @@ ${format.map((item, index) => `${index + 1}. ${item}：【请填写${item}】`).
 
 您好！
 
-我是【姓名/单位/身份】，现就【事项名称】进行说明/申请/汇报，具体内容如下：
+我是【姓名/单位/身份】，现就【事项名称】作如下说明。
 
 一、基本情况
 
-【请在此填写事情背景、使用场景或基本信息。】
+【请填写事情背景、使用场景、涉及人员和核心事项。】
 
 二、具体内容
 
-【请在此填写主要内容、过程、理由、安排或个人想法。】
+【请按照时间顺序或事项顺序填写主要内容，尽量客观、清楚、可执行。】
 
-三、后续安排
+三、处理意见或后续安排
 
-【请在此填写下一步计划、承诺事项、处理方式或联系方式。】
+【请填写下一步计划、处理方式、承诺事项、联系人或完成时间。】
 
-以上内容请予以参考/审批/知悉。
-
-此致
-敬礼！
+以上内容请予以知悉。
 
 署名：【姓名/单位】
 日期：【日期】`;
-}const templates = TEMPLATE_SEED.map(([title, category, tag, format], index) => ({
+}
+
+const templates = TEMPLATE_SEED.map(([title, category, tag, format], index) => ({
   id: index + 1,
   slug: toTemplateSlug(title),
   title,
@@ -187,7 +232,11 @@ ${format.map((item, index) => `${index + 1}. ${item}：【请填写${item}】`).
   scenario: `适合${category}中需要快速准备「${title.replace("模板", "")}」的场景，打开即可查看标准结构并复制修改。`,
   content: buildContent(title, format),
   note: title.includes("离职通知") || title.includes("辞职通知")
-    ? "红色内容为必须替换项。离职/辞职在法律表述上属于书面通知，不建议写成“申请批准”。复制到 Word 后，请按实际试用期或转正状态调整通知期限。"
+    ? "红色内容为必须替换项。离职/辞职在表述上属于书面通知，不建议写成“申请批准”。复制到 Word 后，请按实际试用期或转正状态调整通知期限。"
+    : title.includes("借条") || title.includes("欠条") || title.includes("委托书") || title.includes("收据")
+    ? "红色内容为必须替换项。此类文书涉及金额、身份信息或授权事项，请务必核对姓名、身份证号、金额大小写、日期、签名和捺印；复杂情况建议结合真实证据和当地要求处理。"
+    : title.includes("教学") || title.includes("说课") || title.includes("公开课") || title.includes("少先队")
+    ? "红色内容为必须替换项。教师类模板请结合教材、学情和学校要求修改，避免直接套用导致内容空泛。"
     : "红色内容为必须替换项。复制到 Word 后，请先改完所有红色字段，再根据实际情况删减段落，避免直接提交占位内容。",
 }));
 
@@ -327,6 +376,7 @@ function TemplateCard({ item, onOpen, favorite = false }) {
         {favorite ? <Pill tone="yellow">已收藏</Pill> : null}
         <Pill>{item.category}</Pill>
         <Pill tone="green">免费</Pill>
+        <Pill tone={item.tag?.includes("高风险") || item.tag?.includes("高意向") ? "yellow" : "gray"}>{item.tag}</Pill>
       </div>
       <h3 className="text-[22px] font-semibold leading-tight tracking-[-0.03em] text-[#111]">{item.title}</h3>
       <p className="mt-4 line-clamp-3 text-[14px] leading-7 text-[#777]">{item.scenario}</p>
@@ -396,14 +446,13 @@ function Header({ simple, openHome, openLogin }) {
           </div>
           <div className="flex items-center gap-2">
             <div className="text-[17px] font-semibold tracking-[-0.02em]">实用模板库</div>
-            <span className="hidden rounded-full bg-[#f5f5f5] px-2.5 py-1 text-[11px] font-medium text-[#777] md:inline-flex">测试版</span>
           </div>
         </button>
 
         {simple ? (
           <div className="flex items-center gap-3">
             <button onClick={openLogin} className="inline-flex rounded-full bg-[#f5f5f5] px-4 py-2.5 text-[14px] font-medium text-[#111] transition hover:bg-[#eee] md:px-5">
-              登录
+              我的
             </button>
             <button onClick={() => openHome("categories")} className="rounded-full bg-[#111] px-5 py-2.5 text-[14px] font-medium text-white">
               返回首页
@@ -414,11 +463,11 @@ function Header({ simple, openHome, openLogin }) {
             <nav className="hidden items-center gap-9 text-[14px] text-[#555] md:flex">
               <a href="#categories">模板分类</a>
               <a href="#popular">热门模板</a>
-              <a href="#download">下载专区</a>
+              <a href="#download">使用说明</a>
               <a href="#membership">免费使用</a>
             </nav>
             <button onClick={openLogin} className="inline-flex items-center rounded-full bg-[#111] px-4 py-2 text-[13px] font-medium text-white">
-              <UserRound className="mr-1.5 h-4 w-4" /> 登录
+              <UserRound className="mr-1.5 h-4 w-4" /> 我的
             </button>
           </div>
         )}
@@ -438,6 +487,7 @@ export default function Page() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
+  const [requestSubmitting, setRequestSubmitting] = useState(false);
   const [requestForm, setRequestForm] = useState({ name: "", category: "", desc: "" });
   const [requestError, setRequestError] = useState("");
   const [requestHistory, setRequestHistory] = useState([]);
@@ -521,6 +571,7 @@ export default function Page() {
   const resetRequest = () => {
     setRequestOpen(false);
     setRequestSent(false);
+    setRequestSubmitting(false);
     setRequestForm({ name: "", category: "", desc: "" });
     setRequestError("");
   };
@@ -608,14 +659,44 @@ export default function Page() {
     showToast("分类链接已复制");
   };
 
-  const submitRequest = () => {
+  const submitRequest = async () => {
+    if (requestSubmitting) return;
     if (!requestForm.name.trim()) return setRequestError("请先填写模板名称");
     if (!requestForm.category) return setRequestError("请选择模板分类");
     if (!requestForm.desc.trim()) return setRequestError("请简单描述一下使用场景");
 
-    setRequestHistory((current) => [{ ...requestForm, createdAt: new Date().toISOString() }, ...current].slice(0, 20));
-    setRequestSent(true);
-    showToast("需求已记录");
+    const payload = {
+      ...requestForm,
+      createdAt: new Date().toISOString(),
+      pageUrl: typeof window !== "undefined" ? window.location.href : "",
+      userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
+    };
+
+    setRequestSubmitting(true);
+    setRequestError("");
+
+    try {
+      const response = await fetch("/api/template-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result?.ok === false) {
+        throw new Error(result?.message || "邮件发送失败");
+      }
+
+      setRequestHistory((current) => [payload, ...current].slice(0, 20));
+      setRequestSent(true);
+      showToast("需求已发送");
+    } catch (error) {
+      setRequestHistory((current) => [payload, ...current].slice(0, 20));
+      setRequestError("邮件发送失败，需求已先保存在本机。请检查邮箱授权码或稍后再试。");
+      showToast("已保存到本机");
+    } finally {
+      setRequestSubmitting(false);
+    }
   };
 
   const setRequestField = (field, value) => {
@@ -704,6 +785,7 @@ export default function Page() {
           form={requestForm}
           error={requestError}
           sent={requestSent}
+          submitting={requestSubmitting}
           setField={setRequestField}
           submit={submitRequest}
           close={resetRequest}
@@ -722,21 +804,23 @@ function HomePage({ query, setQuery, activeCategory, setActiveCategory, filtered
     <>
       <main>
         <Hero query={query} setQuery={setQuery} scrollToResults={scrollToResults} />
+        <QualityDirectionSection />
 
         <section id="categories" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-8 md:px-8">
           <SectionTitle title="模板分类" desc="从高频场景开始，先做小而实用的模板库。" />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {CATEGORY_CONFIG.map((item) => (
               <CategoryCard key={item.id} category={item} onSelect={openCategoryPage} />
             ))}
           </div>
         </section>
 
-        {favoriteTemplates.length > 0 ? <TemplateRail title="我的收藏" desc="你刚刚收藏的模板会显示在这里，后续登录后可同步保存到账号。" items={favoriteTemplates} onOpen={setSelected} favorite /> : null}
+        {favoriteTemplates.length > 0 ? <TemplateRail title="我的收藏" desc="你刚刚收藏的模板会显示在这里，方便下次继续使用。" items={favoriteTemplates} onOpen={setSelected} favorite /> : null}
         {recentTemplates.length > 0 ? <TemplateRail title="最近查看" desc="你最近打开过的模板会显示在这里，方便快速继续使用。" items={recentTemplates} onOpen={setSelected} /> : null}
 
-        <TemplateRail title="最新更新" desc="近期整理的常用模板，适合快速查看和复制使用。" items={templates.slice(0, 6)} onOpen={setSelected} />
+        <TemplateRail title="精选模板" desc="优先展示高频、通用、可直接复制到 Word 的实用模板。" items={FEATURED_TEMPLATE_TITLES.map((title) => templates.find((item) => item.title === title)).filter(Boolean).slice(0, 6)} onOpen={setSelected} />
         <TemplateResults query={query} setQuery={setQuery} activeCategory={activeCategory} setActiveCategory={setActiveCategory} filtered={filtered} setSelected={setSelected} setRequestOpen={setRequestOpen} />
+        <PackPreviewSection />
         <DownloadSection />
         <UsageSection />
         <AboutSection setRequestOpen={setRequestOpen} />
@@ -755,7 +839,7 @@ function Hero({ query, setQuery, scrollToResults }) {
           <h1 className="text-[44px] font-semibold leading-[1.05] tracking-[-0.055em] md:text-[76px] lg:text-[88px]">
             常用模板<span className="block">一页搞定</span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理工作办公、教师教育、学生校园、生活实用、发言讲话和个人求职模板。支持纯文本复制、复制到 Word，并用红色标出需要替换的内容。</p>
+          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">不是资料杂货铺，而是把工作、教师、学生、生活、讲话、求职里的高频模板做成可直接复制的精品文档。支持复制到 Word，并用红色标出必须替换的内容。</p>
 
           <div className="mx-auto mt-11 flex max-w-2xl items-center rounded-full bg-[#f5f5f5] p-2">
             <Search className="ml-5 h-5 w-5 text-[#999]" />
@@ -793,7 +877,7 @@ function Hero({ query, setQuery, scrollToResults }) {
 
           <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-3">
             {[
-              [46, "常用模板"],
+              [templates.length, "常用模板"],
               [6, "实用分类"],
               ["Word", "排版复制"],
             ].map(([number, label]) => (
@@ -804,6 +888,38 @@ function Hero({ query, setQuery, scrollToResults }) {
             ))}
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+function QualityDirectionSection() {
+  return (
+    <section className="mx-auto max-w-[1380px] px-5 py-8 md:px-8">
+      <div className="grid gap-4 md:grid-cols-3">
+        <InfoBox title="质量优先" lines={["不再单纯堆数量，优先打磨高频、可复用、能直接粘贴到 Word 的精品模板。", "每个模板都围绕真实提交场景写，减少空话和假示例。"]} />
+        <InfoBox title="红色替换字段" lines={["姓名、单位、日期、金额、联系方式等字段统一用红色提示。", "用户复制到 Word 后，可以先检查红色内容，再提交正式版本。"]} />
+        <InfoBox title="高风险文书更谨慎" lines={["离职使用“通知”而非“申请批准”。", "借条、欠条、委托书等会提醒核对金额、身份信息、签名和日期。"]} dark />
+      </div>
+    </section>
+  );
+}
+
+function PackPreviewSection() {
+  return (
+    <section className="mx-auto max-w-[1380px] px-5 py-10 md:px-8">
+      <SectionTitle title="专题合集" desc="按真实使用场景整理常用模板，方便快速查找和复制。" />
+      <div className="grid gap-4 md:grid-cols-3">
+        {PACK_PREVIEW.map((item) => (
+          <div key={item.title} className="flex min-h-[260px] flex-col rounded-[36px] bg-white p-8 md:p-9">
+            <h3 className="text-[26px] font-semibold tracking-[-0.04em] text-[#111]">{item.title}</h3>
+            <p className="mt-5 text-[15px] leading-8 text-[#666]">{item.desc}</p>
+            <div className="mt-auto pt-8">
+              <span className="inline-flex rounded-full bg-[#f5f5f5] px-5 py-3 text-[14px] font-medium text-[#555]">持续更新</span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -823,11 +939,20 @@ function TemplateRail({ title, desc, items, onOpen, favorite = false }) {
 }
 
 function TemplateResults({ query, setQuery, activeCategory, setActiveCategory, filtered, setSelected, setRequestOpen }) {
+  const [expanded, setExpanded] = useState(false);
+  const collapsedLimit = 8;
+  const shouldCollapse = filtered.length > collapsedLimit;
+  const visibleItems = expanded || !shouldCollapse ? filtered : filtered.slice(0, collapsedLimit);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [query, activeCategory]);
+
   return (
     <section id="popular" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-10 md:px-8">
       <SectionTitle
         title={activeCategory === "全部" ? "热门模板" : activeCategory}
-        desc={query ? `已为你找到 ${filtered.length} 个相关模板，关键词：${query}` : "每个模板都按统一标准整理，减少查找和修改成本。"}
+        desc={query ? `已为你找到 ${filtered.length} 个相关模板，关键词：${query}` : "默认展示高频模板，更多内容可按需展开查看。"}
         action={
           query ? (
             <button onClick={() => setQuery("")} className="rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[#111] transition hover:bg-[#eee]">
@@ -846,11 +971,24 @@ function TemplateResults({ query, setQuery, activeCategory, setActiveCategory, f
       </div>
 
       {filtered.length > 0 ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {filtered.map((item) => (
-            <TemplateCard key={item.id} item={item} onOpen={setSelected} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {visibleItems.map((item) => (
+              <TemplateCard key={item.id} item={item} onOpen={setSelected} />
+            ))}
+          </div>
+
+          {shouldCollapse ? (
+            <div className="mt-7 flex justify-center">
+              <button
+                onClick={() => setExpanded((current) => !current)}
+                className="rounded-full bg-white px-6 py-3 text-[14px] font-medium text-[#111] shadow-sm transition hover:bg-[#eee]"
+              >
+                {expanded ? "收起模板" : `展开更多模板（${filtered.length - collapsedLimit}）`}
+              </button>
+            </div>
+          ) : null}
+        </>
       ) : (
         <EmptyResults setQuery={setQuery} setRequestOpen={setRequestOpen} />
       )}
@@ -863,7 +1001,7 @@ function EmptyResults({ setQuery, setRequestOpen }) {
     <div className="rounded-[32px] bg-white p-10 text-center">
       <FileText className="mx-auto h-10 w-10 text-[#aaa]" strokeWidth={1.8} />
       <h3 className="mt-5 text-[24px] font-semibold tracking-[-0.04em] text-[#111]">没有找到相关模板</h3>
-      <p className="mt-3 text-[15px] leading-7 text-[#777]">换个关键词试试，或者提交模板需求，我们后续整理。</p>
+      <p className="mt-3 text-[15px] leading-7 text-[#777]">换个关键词试试，或者提交你想要的模板需求。</p>
       <div className="mt-7 flex flex-wrap justify-center gap-3">
         <button onClick={() => setQuery("")} className="rounded-full bg-[#111] px-5 py-3 text-[14px] font-medium text-white transition hover:bg-[#333]">
           显示全部模板
@@ -1020,7 +1158,7 @@ function DetailPage({
 
         <aside className="space-y-4">
           <InfoBox title="填写提醒" lines={[item.note]} />
-          <InfoBox title="收藏功能" lines={[isFavorite ? "这个模板已加入收藏。后续登录后可同步保存到账号。" : "点击收藏后，可在后续用户中心里快速找到常用模板。"]} />
+          <InfoBox title="收藏功能" lines={[isFavorite ? "这个模板已加入收藏，方便下次继续查看。" : "点击收藏后，可在本页快速找到常用模板。"]} />
           <InfoBox title="Word使用提示" lines={["点击复制到Word后，打开Word直接粘贴即可。红色文字为必须检查和替换的内容，普通黑色正文可按需保留。"]} dark />
         </aside>
       </section>
@@ -1115,17 +1253,18 @@ function DownloadSection() {
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-[36px] bg-[#111] p-8 text-white md:col-span-2 md:p-11">
           <Download size={23} />
-          <h2 className="mt-12 text-[32px] font-semibold md:text-[48px]">下载专区</h2>
-          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">当前已支持纯文本复制和 Word 排版复制。后续会继续完善 Word、Excel、PDF 文件下载和资料包功能。</p>
+          <h2 className="mt-12 text-[32px] font-semibold md:text-[48px]">使用说明</h2>
+          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">模板支持在线预览和复制到 Word。复制后，请先检查红色替换字段，再根据实际情况调整姓名、单位、日期、金额、联系方式等内容。</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">复制到Word</span>
-            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">文件下载规划中</span>
+            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">复制到 Word</span>
+            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">在线预览</span>
+            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">红色字段提示</span>
           </div>
         </div>
         <div className="rounded-[36px] bg-white p-8 md:p-11">
           <ShieldCheck className="h-10 w-10" />
-          <h3 className="mt-12 text-[28px] font-semibold">测试版说明</h3>
-          <p className="mt-4 text-[15px] leading-8 text-[#777]">当前版本适合上线测试搜索、浏览、复制、收藏和需求反馈流程。</p>
+          <h3 className="mt-12 text-[28px] font-semibold">内容说明</h3>
+          <p className="mt-4 text-[15px] leading-8 text-[#777]">所有模板以通用、正式、易修改为整理原则。涉及离职、借条、欠条、委托书等文书时，请结合实际情况核对关键信息，必要时咨询专业人士。</p>
         </div>
       </div>
     </section>
@@ -1137,7 +1276,7 @@ function UsageSection() {
     <section id="membership" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-10 md:px-8">
       <div className="grid gap-4 md:grid-cols-2">
         <InfoBox title="免费开放使用" lines={["当前全部模板免费开放，打开即可查看、复制和使用。", "需要修改的内容会在 Word 预览里标红，用户照着替换即可。"]} />
-        <InfoBox title="更多实用功能" lines={["后续会继续完善文件下载、资料包整理、收藏和历史记录。"]} dark />
+        <InfoBox title="使用更方便" lines={["按分类查找、在线预览、复制到 Word 和红色字段提示，帮助用户更快完成正式文档。"]} dark />
       </div>
     </section>
   );
@@ -1151,7 +1290,7 @@ function AboutSection({ setRequestOpen }) {
           <div>
             <BookOpen className="mb-4 h-5 w-5 text-[#777]" />
             <h2 className="text-[30px] font-semibold md:text-[44px]">先做小而实用</h2>
-            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#777]">这里会持续整理高频、实用、常见的模板内容，并统一格式，方便用户直接复制、修改和使用。</p>
+            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#777]">这里会持续整理高频、实用、常见的模板内容。每个模板尽量保持正式、清楚、通用，方便用户直接复制、修改和使用。</p>
           </div>
           <button onClick={() => setRequestOpen(true)} className="rounded-full bg-[#111] px-7 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">
             提交模板需求
@@ -1179,17 +1318,15 @@ function Footer({ setInfoOpen }) {
 
 function LoginModal({ onClose, favoriteCount, recentCount, requestCount, clearLocalData }) {
   return (
-    <Modal icon={<UserRound size={23} strokeWidth={1.8} />} title="登录功能规划中" onClose={onClose}>
-      <p className="mt-3 text-[15px] leading-8 text-[#777]">后续可用于保存收藏、查看历史记录和管理文件下载。</p>
+    <Modal icon={<UserRound size={23} strokeWidth={1.8} />} title="用户中心" onClose={onClose}>
+      <p className="mt-3 text-[15px] leading-8 text-[#777]">你可以在这里查看本地保存的收藏、最近查看和模板需求记录。</p>
       <div className="mt-7 grid grid-cols-3 gap-3">
         <Stat label="收藏" value={favoriteCount} />
         <Stat label="最近查看" value={recentCount} />
         <Stat label="需求" value={requestCount} />
       </div>
-      <div className="mt-5 rounded-[24px] bg-[#f5f5f5] p-5 text-[14px] leading-7 text-[#666]">当前收藏、最近查看和需求记录已支持本地保存，登录后可升级为账号同步。</div>
+      <div className="mt-5 rounded-[24px] bg-[#f5f5f5] p-5 text-[14px] leading-7 text-[#666]">当前收藏、最近查看和需求记录会保存在本机浏览器中。</div>
       <div className="mt-5 grid gap-3">
-        <button className="rounded-full bg-[#111] px-5 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">微信登录，占位</button>
-        <button className="rounded-full bg-[#f5f5f5] px-5 py-3.5 text-[14px] font-medium text-[#111] transition hover:bg-[#eee]">手机号登录，占位</button>
         <button onClick={clearLocalData} className="rounded-full bg-[#fff3f3] px-5 py-3.5 text-[14px] font-medium text-[#c62828] transition hover:bg-[#ffe8e8]">清空本地记录</button>
       </div>
     </Modal>
@@ -1205,11 +1342,11 @@ function Stat({ label, value }) {
   );
 }
 
-function RequestModal({ form, error, sent, setField, submit, close }) {
+function RequestModal({ form, error, sent, submitting, setField, submit, close }) {
   if (sent) {
     return (
       <Modal icon={<Check size={23} strokeWidth={1.8} />} title="已收到需求" onClose={close}>
-        <p className="mt-3 text-[15px] leading-8 text-[#777]">需求已保存到本地记录。后续接入后台、飞书表格或数据库后，可以同步收集真实用户需求。</p>
+        <p className="mt-3 text-[15px] leading-8 text-[#777]">需求已发送。我们会优先参考高频需求继续补充模板。</p>
         <button onClick={close} className="mt-7 w-full rounded-full bg-[#111] px-5 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">完成</button>
       </Modal>
     );
@@ -1217,7 +1354,7 @@ function RequestModal({ form, error, sent, setField, submit, close }) {
 
   return (
     <Modal icon={<FileText size={23} strokeWidth={1.8} />} title="提交模板需求" onClose={close}>
-      <p className="mt-3 text-[15px] leading-8 text-[#777]">告诉我们你想要什么模板，后续会优先整理高频需求。</p>
+      <p className="mt-3 text-[15px] leading-8 text-[#777]">告诉我们你想要什么模板，我们会优先补充高频、通用、实用的内容。</p>
       <div className="mt-7 grid gap-3">
         <input value={form.name} onChange={(e) => setField("name", e.target.value)} placeholder="模板名称，例如：租房退押金说明" className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] outline-none" />
         <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] text-[#666] outline-none">
@@ -1228,7 +1365,13 @@ function RequestModal({ form, error, sent, setField, submit, close }) {
         </select>
         <textarea value={form.desc} onChange={(e) => setField("desc", e.target.value)} placeholder="简单描述使用场景，例如：我要向房东说明退押金问题" rows={4} className="resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] outline-none" />
         {error ? <div className="rounded-2xl bg-[#fff3f3] px-5 py-3 text-[13px] text-[#c62828]">{error}</div> : null}
-        <button onClick={submit} className="rounded-full bg-[#111] px-5 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">提交需求</button>
+        <button
+          onClick={submit}
+          disabled={submitting}
+          className="rounded-full bg-[#111] px-5 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333] disabled:cursor-not-allowed disabled:bg-[#999]"
+        >
+          {submitting ? "提交中..." : "提交需求"}
+        </button>
       </div>
     </Modal>
   );
@@ -1254,7 +1397,7 @@ function InfoModal({ type, close }) {
     },
     privacy: {
       title: "隐私说明",
-      body: ["当前版本不需要登录即可使用模板内容。", "后续如开放登录、收藏、下载记录等功能，会补充更完整的隐私说明。"],
+      body: ["当前版本不需要登录即可使用模板内容。", "收藏和最近查看会保存在本机浏览器中；模板需求提交后会发送到站点邮箱，并在本机保留一份记录。"],
     },
   };
 
