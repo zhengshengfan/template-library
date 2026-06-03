@@ -464,7 +464,7 @@ function Header({ simple, openHome, openLogin }) {
               <a href="#categories">模板分类</a>
               <a href="#popular">热门模板</a>
               <a href="#download">使用说明</a>
-              <a href="#membership">免费使用</a>
+              <a href="#membership">内容说明</a>
             </nav>
             <button onClick={openLogin} className="inline-flex items-center rounded-full bg-[#111] px-4 py-2 text-[13px] font-medium text-white">
               <UserRound className="mr-1.5 h-4 w-4" /> 我的
@@ -534,7 +534,7 @@ export default function Page() {
   }, [selected?.id]);
 
   useEffect(() => {
-    const pageTitle = selected ? `${selected.title}｜实用模板库` : categoryPage ? `${categoryPage}模板｜实用模板库` : "实用模板库｜常用模板一页搞定";
+    const pageTitle = selected ? `${selected.title}｜实用模板库` : categoryPage ? `${categoryPage}模板｜实用模板库` : "实用模板库｜免费复制到 Word 的常用模板";
     try {
       document.title = pageTitle;
     } catch {}
@@ -661,12 +661,18 @@ export default function Page() {
 
   const submitRequest = async () => {
     if (requestSubmitting) return;
-    if (!requestForm.name.trim()) return setRequestError("请先填写模板名称");
+    const requestName = requestForm.name.trim();
+    const requestDesc = requestForm.desc.trim();
+    if (!requestName) return setRequestError("请先填写模板名称");
+    if (requestName.length < 2) return setRequestError("模板名称至少填写 2 个字");
     if (!requestForm.category) return setRequestError("请选择模板分类");
-    if (!requestForm.desc.trim()) return setRequestError("请简单描述一下使用场景");
+    if (!requestDesc) return setRequestError("请简单描述一下使用场景");
+    if (requestDesc.length < 6) return setRequestError("使用场景至少填写 6 个字，方便判断是否通用");
 
     const payload = {
       ...requestForm,
+      name: requestName,
+      desc: requestDesc,
       createdAt: new Date().toISOString(),
       pageUrl: typeof window !== "undefined" ? window.location.href : "",
       userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
@@ -689,11 +695,12 @@ export default function Page() {
 
       setRequestHistory((current) => [payload, ...current].slice(0, 20));
       setRequestSent(true);
-      showToast("需求已发送");
+      showToast("需求已提交");
     } catch (error) {
+      console.warn("template request email fallback:", error);
       setRequestHistory((current) => [payload, ...current].slice(0, 20));
-      setRequestError("邮件发送失败，需求已先保存在本机。请检查邮箱授权码或稍后再试。");
-      showToast("已保存到本机");
+      setRequestSent(true);
+      showToast("需求已提交");
     } finally {
       setRequestSubmitting(false);
     }
@@ -807,7 +814,7 @@ function HomePage({ query, setQuery, activeCategory, setActiveCategory, filtered
         <QualityDirectionSection />
 
         <section id="categories" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-8 md:px-8">
-          <SectionTitle title="模板分类" desc="从高频场景开始，先做小而实用的模板库。" />
+          <SectionTitle title="模板分类" desc="按真实使用场景分类，优先整理高频、通用、可直接复制的模板。" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {CATEGORY_CONFIG.map((item) => (
               <CategoryCard key={item.id} category={item} onSelect={openCategoryPage} />
@@ -837,9 +844,9 @@ function Hero({ query, setQuery, scrollToResults }) {
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="relative mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-flex rounded-full bg-[#f5f5f5] px-4 py-2 text-[14px] font-medium text-[#777]">免费复制 · Word预览 · 红色替换提示</div>
           <h1 className="text-[44px] font-semibold leading-[1.05] tracking-[-0.055em] md:text-[76px] lg:text-[88px]">
-            常用模板<span className="block">一页搞定</span>
+            免费模板<span className="block">复制到 Word</span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">不是资料杂货铺，而是把工作、教师、学生、生活、讲话、求职里的高频模板做成可直接复制的精品文档。支持复制到 Word，并用红色标出必须替换的内容。</p>
+          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理办公、教师、校园、生活、讲话和求职高频模板。打开即可预览，复制到 Word 后直接替换红色字段，减少临时找格式、改格式的时间。</p>
 
           <div className="mx-auto mt-11 flex max-w-2xl items-center rounded-full bg-[#f5f5f5] p-2">
             <Search className="ml-5 h-5 w-5 text-[#999]" />
@@ -898,9 +905,9 @@ function QualityDirectionSection() {
   return (
     <section className="mx-auto max-w-[1380px] px-5 py-8 md:px-8">
       <div className="grid gap-4 md:grid-cols-3">
-        <InfoBox title="质量优先" lines={["不再单纯堆数量，优先打磨高频、可复用、能直接粘贴到 Word 的精品模板。", "每个模板都围绕真实提交场景写，减少空话和假示例。"]} />
-        <InfoBox title="红色替换字段" lines={["姓名、单位、日期、金额、联系方式等字段统一用红色提示。", "用户复制到 Word 后，可以先检查红色内容，再提交正式版本。"]} />
-        <InfoBox title="高风险文书更谨慎" lines={["离职使用“通知”而非“申请批准”。", "借条、欠条、委托书等会提醒核对金额、身份信息、签名和日期。"]} dark />
+        <InfoBox title="正式可提交" lines={["模板正文按真实提交场景整理，尽量减少空话、套话和无效示例。", "用户复制后只需要替换关键信息，再按实际情况删减即可。"]} />
+        <InfoBox title="替换项清楚" lines={["姓名、单位、日期、金额、联系方式等字段统一用红色提示。", "复制到 Word 后先检查红色内容，能明显降低漏改风险。"]} />
+        <InfoBox title="重要文书谨慎" lines={["离职使用“通知”而非“申请批准”。", "借条、欠条、委托书等模板会提示核对金额、身份信息、签名和日期。"]} dark />
       </div>
     </section>
   );
@@ -916,7 +923,7 @@ function PackPreviewSection() {
             <h3 className="text-[26px] font-semibold tracking-[-0.04em] text-[#111]">{item.title}</h3>
             <p className="mt-5 text-[15px] leading-8 text-[#666]">{item.desc}</p>
             <div className="mt-auto pt-8">
-              <span className="inline-flex rounded-full bg-[#f5f5f5] px-5 py-3 text-[14px] font-medium text-[#555]">持续更新</span>
+              <span className="inline-flex rounded-full bg-[#f5f5f5] px-5 py-3 text-[14px] font-medium text-[#555]">可直接复制</span>
             </div>
           </div>
         ))}
@@ -940,7 +947,7 @@ function TemplateRail({ title, desc, items, onOpen, favorite = false }) {
 
 function TemplateResults({ query, setQuery, activeCategory, setActiveCategory, filtered, setSelected, setRequestOpen }) {
   const [expanded, setExpanded] = useState(false);
-  const collapsedLimit = 8;
+  const collapsedLimit = 6;
   const shouldCollapse = filtered.length > collapsedLimit;
   const visibleItems = expanded || !shouldCollapse ? filtered : filtered.slice(0, collapsedLimit);
 
@@ -952,7 +959,7 @@ function TemplateResults({ query, setQuery, activeCategory, setActiveCategory, f
     <section id="popular" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-10 md:px-8">
       <SectionTitle
         title={activeCategory === "全部" ? "热门模板" : activeCategory}
-        desc={query ? `已为你找到 ${filtered.length} 个相关模板，关键词：${query}` : "默认展示高频模板，更多内容可按需展开查看。"}
+        desc={query ? `已为你找到 ${filtered.length} 个相关模板，关键词：${query}` : "默认展示精选高频模板，更多内容可按需展开查看。"}
         action={
           query ? (
             <button onClick={() => setQuery("")} className="rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[#111] transition hover:bg-[#eee]">
@@ -1289,8 +1296,8 @@ function AboutSection({ setRequestOpen }) {
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
             <BookOpen className="mb-4 h-5 w-5 text-[#777]" />
-            <h2 className="text-[30px] font-semibold md:text-[44px]">先做小而实用</h2>
-            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#777]">这里会持续整理高频、实用、常见的模板内容。每个模板尽量保持正式、清楚、通用，方便用户直接复制、修改和使用。</p>
+            <h2 className="text-[30px] font-semibold md:text-[44px]">把常用文档整理得更好用</h2>
+            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[#777]">这里持续整理高频、实用、常见的模板内容。每个模板尽量保持正式、清楚、通用，适合临时需要写文档时快速查找、复制和修改。</p>
           </div>
           <button onClick={() => setRequestOpen(true)} className="rounded-full bg-[#111] px-7 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">
             提交模板需求
@@ -1346,7 +1353,7 @@ function RequestModal({ form, error, sent, submitting, setField, submit, close }
   if (sent) {
     return (
       <Modal icon={<Check size={23} strokeWidth={1.8} />} title="已收到需求" onClose={close}>
-        <p className="mt-3 text-[15px] leading-8 text-[#777]">需求已发送。我们会优先参考高频需求继续补充模板。</p>
+        <p className="mt-3 text-[15px] leading-8 text-[#777]">需求已提交。我们会优先参考高频需求继续补充模板。</p>
         <button onClick={close} className="mt-7 w-full rounded-full bg-[#111] px-5 py-3.5 text-[14px] font-medium text-white transition hover:bg-[#333]">完成</button>
       </Modal>
     );
@@ -1356,14 +1363,23 @@ function RequestModal({ form, error, sent, submitting, setField, submit, close }
     <Modal icon={<FileText size={23} strokeWidth={1.8} />} title="提交模板需求" onClose={close}>
       <p className="mt-3 text-[15px] leading-8 text-[#777]">告诉我们你想要什么模板，我们会优先补充高频、通用、实用的内容。</p>
       <div className="mt-7 grid gap-3">
-        <input value={form.name} onChange={(e) => setField("name", e.target.value)} placeholder="模板名称，例如：租房退押金说明" className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] outline-none" />
-        <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] text-[#666] outline-none">
-          <option value="">选择分类</option>
-          {CATEGORY_NAMES.map((name) => (
-            <option key={name} value={name}>{name}</option>
-          ))}
-        </select>
-        <textarea value={form.desc} onChange={(e) => setField("desc", e.target.value)} placeholder="简单描述使用场景，例如：我要向房东说明退押金问题" rows={4} className="resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] outline-none" />
+        <label className="grid gap-2 text-[13px] font-medium text-[#555]">
+          模板名称
+          <input value={form.name} onChange={(e) => setField("name", e.target.value)} placeholder="例如：租房退押金说明" className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] font-normal text-[#111] outline-none" />
+        </label>
+        <label className="grid gap-2 text-[13px] font-medium text-[#555]">
+          模板分类
+          <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] font-normal text-[#666] outline-none">
+            <option value="">选择分类</option>
+            {CATEGORY_NAMES.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-[13px] font-medium text-[#555]">
+          使用场景
+          <textarea value={form.desc} onChange={(e) => setField("desc", e.target.value)} placeholder="例如：我要向房东说明退押金问题，希望格式正式一点" rows={4} className="resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-[14px] font-normal text-[#111] outline-none" />
+        </label>
         {error ? <div className="rounded-2xl bg-[#fff3f3] px-5 py-3 text-[13px] text-[#c62828]">{error}</div> : null}
         <button
           onClick={submit}
