@@ -33,7 +33,21 @@ const CATEGORY_CONFIG = [
   { id: "career", name: "个人求职", icon: UserRound, desc: "个人简历、自我评价、求职信、面试自我介绍、实习总结等。" },
 ];
 
+const TEMPLATE_TYPE_CONFIG = [
+  { id: "word", name: "Word 文档", icon: FileText, desc: "正式文书、教学资料、工作总结等，支持预览和复制到 Word。" },
+  { id: "ppt", name: "PPT 模板", icon: BookOpen, desc: "公开课、汇报、活动课等可编辑演示模板，适合直接改内容。" },
+  { id: "image", name: "图片海报", icon: Star, desc: "小红书封面、活动海报、背景图等视觉模板，适合快速发布。" },
+  { id: "excel", name: "表格模板", icon: Table2, desc: "考勤、清单、计划、统计等表格模板，后续逐步补充。" },
+  { id: "package", name: "精品资料包", icon: Download, desc: "围绕一个场景打包 Word、PPT、图片和表格，后续作为精品合集。" },
+];
+
 type TemplateSeedItem = [string, string, string, string[]];
+
+const DOWNLOAD_LINKS = {
+  // 后续确定网盘后，把空字符串替换成分享链接，例如：
+  // teacherOpenClassPpt: "https://pan.example.com/xxx",
+  teacherOpenClassPpt: "",
+};
 
 const TEMPLATE_SEED: TemplateSeedItem[] = [
   ["请假条模板", "工作办公", "高频使用", ["称呼", "请假原因", "请假时间", "工作安排", "署名日期"]],
@@ -89,20 +103,18 @@ const TEMPLATE_SEED: TemplateSeedItem[] = [
   ["离职交接清单模板", "个人求职", "交接常用", ["工作事项", "文件资料", "账号权限", "待办问题", "交接确认"]],
 ];
 
-const HOT_KEYWORDS = ["请假条", "离职通知", "工作总结", "教学设计", "说课稿", "情况说明", "借条", "自我介绍"];
+const HOT_KEYWORDS = ["请假条", "离职通知", "工作总结", "公开课PPT", "教学设计", "说课稿", "借条", "委托书"];
 const FEATURED_TEMPLATE_TITLES = [
+  "教师公开课 PPT 模板",
   "离职通知书模板",
   "请假条模板",
   "工作总结模板",
   "情况说明书模板",
-  "借条模板",
-  "欠条模板",
-  "委托书模板",
   "教学设计模板",
   "说课稿模板",
-  "公开课逐字稿模板",
+  "借条模板",
+  "委托书模板",
   "个人简历模板",
-  "面试自我介绍模板",
 ];
 
 const PACK_PREVIEW = [
@@ -604,13 +616,19 @@ ${format.map((item, index) => `${index + 1}. ${item}：【请填写${item}】`).
 日期：【日期】`;
 }
 
-const templates = TEMPLATE_SEED.map(([title, category, tag, format], index) => ({
+const baseTemplates = TEMPLATE_SEED.map(([title, category, tag, format], index) => ({
   id: index + 1,
   slug: toTemplateSlug(title),
   title,
   category,
   tag,
   format,
+  type: "word",
+  typeLabel: "Word 文档",
+  fileType: "docx",
+  isFree: true,
+  downloadStatus: "copy",
+  qualityLevel: "free",
   scenario: `适合${category}中需要快速准备「${title.replace("模板", "")}」的场景，打开即可查看标准结构并复制修改。`,
   content: buildContent(title, format),
   note: title.includes("离职通知") || title.includes("辞职通知")
@@ -621,6 +639,53 @@ const templates = TEMPLATE_SEED.map(([title, category, tag, format], index) => (
     ? "红色内容为必须替换项。教师类模板请结合教材、学情和学校要求修改，避免直接套用导致内容空泛。"
     : "红色内容为必须替换项。复制到 Word 后，请先改完所有红色字段，再根据实际情况删减段落，避免直接提交占位内容。",
 }));
+
+const ASSET_TEMPLATE_SEED = [
+  {
+    title: "教师公开课 PPT 模板",
+    category: "教师教育",
+    tag: "免费精品",
+    type: "ppt",
+    typeLabel: "PPT 模板",
+    fileType: "pptx",
+    format: ["可编辑 PPT", "封面页", "目录页", "教学目标", "教学流程", "课堂总结"],
+    scenario: "适合教师公开课、校内赛课、教研展示等场景。标题、目录、章节页和内容模块可编辑，下载后可直接按课程内容修改使用。",
+    content: `教师公开课 PPT 模板
+
+适用场景：教师公开课、校内赛课、教研展示、教学比赛。
+
+包含页面：
+一、封面页
+二、目录页
+三、教学目标页
+四、教学内容页
+五、教学过程页
+六、课堂总结页
+
+可编辑内容：
+【课题名称】
+【授课教师】
+【授课日期】
+【目录标题】
+【章节标题】
+【正文内容】`,
+    note: "这是一套可编辑 PPT 模板。标题、副标题、授课教师、日期、目录、章节标题、卡片标题和正文说明均可修改。下载后请按自己的课程内容替换文字并检查版式。",
+    downloadUrl: DOWNLOAD_LINKS.teacherOpenClassPpt,
+    downloadMode: "external",
+    previewUrl: "/templates/editable-premium-batch1/previews/teacher_open_class_editable_premium_preview.png",
+    isFree: true,
+    downloadStatus: "available",
+    qualityLevel: "free",
+  },
+];
+
+const assetTemplates = ASSET_TEMPLATE_SEED.map((item, index) => ({
+  id: baseTemplates.length + index + 1,
+  slug: toTemplateSlug(item.title),
+  ...item,
+}));
+
+const templates = [...baseTemplates, ...assetTemplates];
 
 
 const RED_FIELD_PATTERNS = [
@@ -757,6 +822,7 @@ function TemplateCard({ item, onOpen, favorite = false }) {
       <div className="mb-7 flex flex-wrap items-center gap-2">
         {favorite ? <Pill tone="yellow">已收藏</Pill> : null}
         <Pill>{item.category}</Pill>
+        <Pill>{item.typeLabel || "Word 文档"}</Pill>
         <Pill tone="green">免费</Pill>
         <Pill tone={item.tag?.includes("高风险") || item.tag?.includes("高意向") ? "yellow" : "gray"}>{item.tag}</Pill>
       </div>
@@ -1136,6 +1202,7 @@ export default function Page() {
     copyTemplate,
     copyTemplateLink,
     copyCategoryLink,
+    showToast,
   };
 
   return (
@@ -1193,10 +1260,12 @@ function HomePage({ query, setQuery, activeCategory, setActiveCategory, filtered
     <>
       <main>
         <Hero query={query} setQuery={setQuery} scrollToResults={scrollToResults} />
+        <TemplateTypeSection />
+        <FreeGallerySection setSelected={setSelected} />
         <QualityDirectionSection />
 
         <section id="categories" className="scroll-mt-24 mx-auto max-w-[1380px] px-5 py-8 md:px-8">
-          <SectionTitle title="模板分类" desc="按真实使用场景分类，优先整理高频、通用、可直接复制的模板。" />
+          <SectionTitle title="模板分类" desc="按真实使用场景分类，优先整理高频、通用、可复制或可下载的精品模板。" />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {CATEGORY_CONFIG.map((item) => (
               <CategoryCard key={item.id} category={item} onSelect={openCategoryPage} />
@@ -1224,11 +1293,11 @@ function Hero({ query, setQuery, scrollToResults }) {
     <section className="mx-auto max-w-[1380px] px-5 pb-8 pt-6 md:px-8">
       <div className="relative overflow-hidden rounded-[36px] bg-white px-6 py-16 md:px-12 md:py-24 lg:py-28">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="relative mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-flex rounded-full bg-[#f5f5f5] px-4 py-2 text-[14px] font-medium text-[#777]">免费复制 · Word预览 · 红色替换提示</div>
+          <div className="mb-6 inline-flex rounded-full bg-[#f5f5f5] px-4 py-2 text-[14px] font-medium text-[#777]">Word · PPT · 图片海报 · 下载简单</div>
           <h1 className="text-[44px] font-semibold leading-[1.05] tracking-[-0.055em] md:text-[76px] lg:text-[88px]">
-            免费模板<span className="block">复制到 Word</span>
+            免费也有好模板<span className="block">精品内容更省时间</span>
           </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理办公、教师、校园、生活、讲话和求职高频模板。打开即可预览，复制到 Word 后直接替换红色字段，减少临时找格式、改格式的时间。</p>
+          <p className="mx-auto mt-7 max-w-2xl text-[17px] leading-8 text-[#666] md:text-[19px]">整理 Word 文档、PPT、图片海报等高频实用模板。打开即可预览，能复制的直接复制，能下载的直接下载，免费内容也按精品标准打磨。</p>
 
           <div className="mx-auto mt-11 flex max-w-2xl items-center rounded-full bg-[#f5f5f5] p-2">
             <Search className="ml-5 h-5 w-5 text-[#999]" />
@@ -1266,9 +1335,9 @@ function Hero({ query, setQuery, scrollToResults }) {
 
           <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-3">
             {[
-              [templates.length, "常用模板"],
-              [6, "实用分类"],
-              ["Word", "排版复制"],
+              [templates.length, "精选模板"],
+              ["Word/PPT", "多类型"],
+              ["下载", "简单清爽"],
             ].map(([number, label]) => (
               <div key={label} className="rounded-[24px] bg-[#f5f5f5] px-4 py-5 text-center">
                 <div className="text-[26px] font-semibold tracking-[-0.04em] text-[#111]">{number}</div>
@@ -1282,6 +1351,61 @@ function Hero({ query, setQuery, scrollToResults }) {
   );
 }
 
+
+function TemplateTypeSection() {
+  return (
+    <section className="mx-auto max-w-[1380px] px-5 py-8 md:px-8">
+      <SectionTitle title="模板类型" desc="网站不只做文字模板，后续会持续补充 Word、PPT、图片海报、表格和精品资料包。" />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        {TEMPLATE_TYPE_CONFIG.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.id} className="rounded-[30px] bg-white p-7">
+              <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f5f5f5] text-[#111]">
+                <Icon size={23} strokeWidth={1.8} />
+              </div>
+              <h3 className="text-[21px] font-semibold tracking-[-0.02em] text-[#111]">{item.name}</h3>
+              <p className="mt-3 text-[14px] leading-7 text-[#777]">{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function FreeGallerySection({ setSelected }) {
+  const galleryItems = templates.filter((item) => item.type !== "word").slice(0, 6);
+  if (!galleryItems.length) return null;
+  return (
+    <section className="mx-auto max-w-[1380px] px-5 py-8 md:px-8">
+      <SectionTitle title="免费精品模板" desc="精选可预览、可下载的模板。当前先保留已整理完成的高质量模板，后续会逐步补充。" />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {galleryItems.map((item) => (
+          <button key={item.id} onClick={() => setSelected(item)} className="group overflow-hidden rounded-[32px] bg-white text-left transition hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+            {item.previewUrl ? (
+              <div className="aspect-[16/10] bg-[#f5f5f5] p-3">
+                <img src={item.previewUrl} alt={item.title} className="h-full w-full rounded-[22px] object-cover" />
+              </div>
+            ) : null}
+            <div className="p-7">
+              <div className="mb-4 flex flex-wrap gap-2">
+                <Pill>{item.typeLabel}</Pill>
+                <Pill tone="green">免费</Pill>
+                <Pill>{item.fileType?.toUpperCase()}</Pill>
+              </div>
+              <h3 className="text-[22px] font-semibold tracking-[-0.03em] text-[#111]">{item.title}</h3>
+              <p className="mt-3 line-clamp-2 text-[14px] leading-7 text-[#777]">{item.scenario}</p>
+              <div className="mt-6 inline-flex items-center text-[14px] font-medium text-[#111]">
+                查看详情 <ArrowRight className="ml-1 h-4 w-4 transition group-hover:translate-x-1" />
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function QualityDirectionSection() {
   return (
@@ -1414,10 +1538,20 @@ function DetailPage({
   copied,
   copyTemplate,
   copyTemplateLink,
+  showToast,
 }) {
   const isFavorite = favorites.includes(item.id);
   const [wordPreviewOpen, setLocalWordPreviewOpen] = useState(true);
   const [wordCopied, setLocalWordCopied] = useState(false);
+  const isWordTemplate = !item.type || item.type === "word";
+
+  const handleTemplateDownload = () => {
+    if (item.downloadUrl) {
+      window.open(item.downloadUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+    showToast?.("下载链接正在整理中");
+  };
 
   useEffect(() => {
     setLocalWordPreviewOpen(true);
@@ -1469,6 +1603,7 @@ function DetailPage({
       <section className="rounded-[36px] bg-white p-7 md:p-12 lg:p-14">
         <div className="flex flex-wrap gap-2">
           <Pill>{item.category}</Pill>
+          <Pill>{item.typeLabel || "Word 文档"}</Pill>
           <Pill tone="green">免费</Pill>
         </div>
 
@@ -1495,7 +1630,7 @@ function DetailPage({
       <section className="mt-4 grid gap-4 lg:grid-cols-[1fr_360px]">
         <div className="rounded-[36px] bg-white p-6 md:p-8">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-[26px] font-semibold">Word预览与复制</h2>
+            <h2 className="text-[26px] font-semibold">{isWordTemplate ? "Word预览与复制" : "模板预览与下载"}</h2>
 
             <div className="flex flex-wrap gap-2">
               <button
@@ -1506,29 +1641,33 @@ function DetailPage({
                 {isFavorite ? "已收藏" : "收藏模板"}
               </button>
 
-              <button
-                onClick={() => setLocalWordPreviewOpen((value) => !value)}
-                className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
-              >
-                <Eye className="mr-2 h-4 w-4" />
-                {wordPreviewOpen ? "收起预览" : "预览Word"}
-              </button>
+              {isWordTemplate ? (
+                <>
+                  <button
+                    onClick={() => setLocalWordPreviewOpen((value) => !value)}
+                    className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    {wordPreviewOpen ? "收起预览" : "预览Word"}
+                  </button>
 
-              <button
-                onClick={copyTemplateWordLocal}
-                className="inline-flex items-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] text-white"
-              >
-                {wordCopied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                {wordCopied ? "已复制Word版" : "复制到Word（推荐）"}
-              </button>
+                  <button
+                    onClick={copyTemplateWordLocal}
+                    className="inline-flex items-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] text-white"
+                  >
+                    {wordCopied ? <Check className="mr-2 h-4 w-4 text-white" /> : <Copy className="mr-2 h-4 w-4 text-white" />}
+                    {wordCopied ? "已复制Word版" : "复制到Word（推荐）"}
+                  </button>
 
-              <button
-                onClick={copyTemplate}
-                className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
-              >
-                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                {copied ? "已复制" : "复制纯文本"}
-              </button>
+                  <button
+                    onClick={copyTemplate}
+                    className="inline-flex items-center rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[14px] text-[#111] transition hover:bg-[#eee]"
+                  >
+                    {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                    {copied ? "已复制" : "复制纯文本"}
+                  </button>
+                </>
+              ) : null}
 
               <button
                 onClick={() => copyTemplateLink(item)}
@@ -1537,18 +1676,30 @@ function DetailPage({
                 <Link className="mr-2 h-4 w-4" />
                 复制链接
               </button>
+
+              {!isWordTemplate ? (
+                <button
+                  type="button"
+                  onClick={handleTemplateDownload}
+                  className="inline-flex min-w-[128px] items-center justify-center rounded-full bg-[#111] px-5 py-2.5 text-[14px] font-medium text-white transition hover:bg-[#333]"
+                  aria-label={item.type === "ppt" ? "下载 PPTX" : item.type === "image" ? "下载图片" : "下载文件"}
+                >
+                  <Download className="mr-2 h-4 w-4 shrink-0 text-white" />
+                  <span className="text-white">{item.type === "ppt" ? "下载 PPTX" : item.type === "image" ? "下载图片" : "下载文件"}</span>
+                </button>
+              ) : null}
             </div>
           </div>
 
-          {wordPreviewOpen ? <WordPreview content={item.content} /> : null}
+          {item.previewUrl ? <AssetPreview item={item} /> : wordPreviewOpen ? <WordPreview content={item.content} /> : null}
 
-          <pre className="mt-4 whitespace-pre-wrap rounded-[30px] bg-[#f8f8f8] p-6 text-[15px] leading-8 text-[#333]">{item.content}</pre>
+          {isWordTemplate ? <pre className="mt-4 whitespace-pre-wrap rounded-[30px] bg-[#f8f8f8] p-6 text-[15px] leading-8 text-[#333]">{item.content}</pre> : null}
         </div>
 
         <aside className="space-y-4">
           <InfoBox title="填写提醒" lines={[item.note]} />
           <InfoBox title="收藏功能" lines={[isFavorite ? "这个模板已加入收藏，方便下次继续查看。" : "点击收藏后，可在本页快速找到常用模板。"]} />
-          <InfoBox title="Word使用提示" lines={["点击复制到Word后，打开Word直接粘贴即可。红色文字为必须检查和替换的内容，普通黑色正文可按需保留。"]} dark />
+          <InfoBox title={isWordTemplate ? "Word使用提示" : "下载使用提示"} lines={isWordTemplate ? ["点击复制到Word后，打开Word直接粘贴即可。红色文字为必须检查和替换的内容，普通黑色正文可按需保留。"] : [item.type === "ppt" ? "点击下载后，将跳转至下载页面获取 PPTX 文件。下载后可在 PowerPoint 或 WPS 中打开，并按课程场景修改标题、目录、章节标题和正文内容。" : "点击下载后，将跳转至下载页面获取文件，可在本地打开并按自己的场景修改内容。"]} dark />
         </aside>
       </section>
 
@@ -1565,6 +1716,23 @@ function DetailPage({
         </div>
       </section>
     </main>
+  );
+}
+
+function AssetPreview({ item }) {
+  return (
+    <div className="rounded-[30px] bg-[#f3f3f3] p-4 md:p-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 className="text-[20px] font-semibold tracking-[-0.03em] text-[#111]">模板预览</h3>
+          <p className="mt-1 text-[13px] text-[#777]">支持在线查看预览图，下载文件后可按实际内容继续修改。</p>
+        </div>
+        <span className="rounded-full bg-white px-3 py-1.5 text-[12px] font-medium text-[#777]">{item.fileType?.toUpperCase()}</span>
+      </div>
+      <div className="overflow-hidden rounded-[24px] bg-white p-3 shadow-[0_12px_40px_rgba(15,23,42,0.10)]">
+        <img src={item.previewUrl} alt={item.title} className="max-h-[680px] w-full rounded-[18px] object-contain" />
+      </div>
+    </div>
   );
 }
 
@@ -1642,18 +1810,22 @@ function DownloadSection() {
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-[36px] bg-[#111] p-8 text-white md:col-span-2 md:p-11">
           <Download size={23} />
-          <h2 className="mt-12 text-[32px] font-semibold md:text-[48px]">使用说明</h2>
-          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">模板支持在线预览和复制到 Word。复制后，请先检查红色替换字段，再根据实际情况调整姓名、单位、日期、金额、联系方式等内容。</p>
+          <h2 className="mt-12 text-[32px] font-semibold md:text-[48px]">下载说明</h2>
+          <p className="mt-5 max-w-2xl text-[16px] leading-8 text-white/65">
+            网站页面只负责模板预览、说明和下载入口。PPT、图片、资料包等文件将统一跳转至下载页面获取，避免网站变得臃肿，也方便后续更新文件。
+          </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">复制到 Word</span>
-            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">在线预览</span>
-            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">红色字段提示</span>
+            <span className="rounded-full bg-white px-5 py-3 text-[14px] font-medium text-[#111]">预览清楚</span>
+            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">下载简单</span>
+            <span className="rounded-full bg-white/10 px-5 py-3 text-[14px] font-medium text-white">文件独立管理</span>
           </div>
         </div>
         <div className="rounded-[36px] bg-white p-8 md:p-11">
           <ShieldCheck className="h-10 w-10" />
           <h3 className="mt-12 text-[28px] font-semibold">内容说明</h3>
-          <p className="mt-4 text-[15px] leading-8 text-[#777]">所有模板以通用、正式、易修改为整理原则。首页优先打磨高频模板，不追求无意义堆数量。涉及离职、借条、欠条、委托书等文书时，请结合实际情况核对关键信息，必要时咨询专业人士。</p>
+          <p className="mt-4 text-[15px] leading-8 text-[#777]">
+            当前优先展示已整理的精品模板预览。下载链接确认后，可直接通过按钮跳转获取文件。
+          </p>
         </div>
       </div>
     </section>
